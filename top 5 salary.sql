@@ -1,0 +1,1 @@
+select top 5 First,Last,DESIGNATIONS,Salary from Employee order by Salary desc;

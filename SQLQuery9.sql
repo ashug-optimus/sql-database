@@ -1,0 +1,1 @@
+select * from Employee where salary<20000;

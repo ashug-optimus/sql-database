@@ -1,0 +1,1 @@
+insert into Employee values('kavita','anand','f',1,'Manager',100000,35);
