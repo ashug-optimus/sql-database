@@ -184,7 +184,5 @@ update Employee set project_id=3 where Employee_id=11;
  Update Employee set PF = 00.1275 * Salary where Salary >0;
 
  select * from Employee;
-
-
  SELECT FORMAT( GETDATE(), 'ddd,dd,MM,yy hh:mm:ss tt');
   SELECT FORMAT( GETDATE(), 'ddd,dd,MM,yy hh:mm:ss tt');
