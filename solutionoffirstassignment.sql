@@ -92,14 +92,14 @@
 	)
 
 	insert into order_table
-		select t_user_master.user_name,
-		       t_product_master.product_name,
-		       sum(t_transaction.transaction_amount) as ordered_quantity,
-			   max(t_transaction.transaction_date)
-			   from t_transaction join t_user_master on t_transaction.user_id=t_user_master.user_id
-			   join t_product_master on t_transaction.product_id =t_product_master.product_id 
-			   where  t_transaction.transaction_type='order'
-		       group by t_user_master.user_name,t_product_master.product_name
+		select  t_user_master.user_name,
+		        t_product_master.product_name,
+		        sum(t_transaction.transaction_amount) as ordered_quantity,
+			max(t_transaction.transaction_date)
+			from t_transaction join t_user_master on t_transaction.user_id=t_user_master.user_id
+			join t_product_master on t_transaction.product_id =t_product_master.product_id 
+			where  t_transaction.transaction_type='order'
+		        group by t_user_master.user_name,t_product_master.product_name
 
 			  
 
@@ -113,15 +113,17 @@
 
 
 	insert into payment
-		select t_user_master.user_name,
-		       t_product_master.product_name,
-		       sum(t_transaction.transaction_amount) as payment
-			   from t_transaction join t_user_master on t_transaction.user_id=t_user_master.user_id
-			   join t_product_master on t_transaction.product_id =t_product_master.product_id 
-			   where  t_transaction.transaction_type='payment'
-			   group by t_user_master.user_name,t_product_master.product_name
+		select  t_user_master.user_name,
+		        t_product_master.product_name,
+		        sum(t_transaction.transaction_amount) as payment
+			from t_transaction join t_user_master on t_transaction.user_id=t_user_master.user_id
+			join t_product_master on t_transaction.product_id =t_product_master.product_id 
+			where  t_transaction.transaction_type='payment'
+			group by t_user_master.user_name,t_product_master.product_name
 
-			   select * from payment
+--query to view all the dATA FROM PAYMENT TABLE
+
+	select * from payment
 
 --Query to create table order-payment-info
 	create table order_payment_info
@@ -133,23 +135,25 @@
 		last_transaction_date date
 	)
 
+--Query to insert data in order_payment table
 	insert into order_payment_info
-		select order_table.user_name,
-		       order_table.product_name,
-			   order_table.ordered_quantity,
-			   payment.payment,
-			   order_table.last_transaction_date
-			   from order_table left join payment on order_table.user_name=payment.user_name 
-			   and 
-			   order_table.product_name=payment.product_name 
+		select  order_table.user_name,
+		        order_table.product_name,
+			order_table.ordered_quantity,
+			payment.payment,
+			order_table.last_transaction_date
+			from order_table left join payment on order_table.user_name=payment.user_name 
+			and 
+			order_table.product_name=payment.product_name 
 
-			   select * from order_payment_info
+--query to view all the dATA FROM order_payment table
+	select * from order_payment_info
 
 --Query to find the balance for each user 
-	select A.*,
-	      (A.order_quantity*t_product_master.cost_per_item-COALESCE(A.amount_paid,0)) as balance 
-		  fROM order_payment_info A  
-		  inner join 
-		  t_product_master 
-		  on 
-		  a.product_name=t_product_master.product_name
+	select  A.*,
+	        (A.order_quantity*t_product_master.cost_per_item-COALESCE(A.amount_paid,0)) as balance 
+		fROM order_payment_info A  
+		inner join 
+		t_product_master 
+		on 
+		a.product_name=t_product_master.product_name
