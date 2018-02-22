@@ -121,20 +121,20 @@
 
 --Query to solve second question of assignment 2
 		   
-		 SELECT S.Name, S.[Total Worked Hours], ta.Activity_description AS [Last Worked Activity], 
- ad.atten_end_hours 
- AS [Hours Worked ]
- FROM t_atten_det ad
-INNER JOIN
-	(SELECT a.Emp_id,e.emp_f_name + ' ' + COALESCE(e.EMP_m_name,'') + ' ' + COALESCE(e.EMP_l_name,'') AS Name, SUM(a.atten_end_hours) AS [Total Worked Hours], MAX(a.atten_start_date) AS [Last Worked Activity]
-	FROM t_empl e
-	INNER JOIN t_atten_det a
-	ON
-	e.Emp_id = a.Emp_id
-	INNER JOIN t_activity ac
-	ON a.Activity_id = ac.Activity_id
-	GROUP BY e.EMP_f_name + ' ' + COALESCE(e.EMP_m_name,'') + ' ' + COALESCE(e.EMP_l_name,''), a.Emp_id)S
-ON ad.atten_start_date = S.[Last Worked Activity]
-INNER JOIN t_activity ta
-ON
-ad.Activity_id = ta.Activity_id;
+	SELECT  S.Name, S.[Total Worked Hours], ta.Activity_description AS [Last Worked Activity], 
+ 		ad.atten_end_hours 
+ 		AS [Hours Worked ]
+ 		FROM t_atten_det ad
+		INNER JOIN
+		(SELECT a.Emp_id,e.emp_f_name + ' ' + COALESCE(e.EMP_m_name,'') + ' ' + COALESCE(e.EMP_l_name,'') AS Name, SUM(a.atten_end_hours) AS [Total Worked Hours], MAX(a.atten_start_date) AS [Last Worked Activity]
+		FROM t_empl e
+		INNER JOIN t_atten_det a
+		ON
+		e.Emp_id = a.Emp_id
+		INNER JOIN t_activity ac
+		ON a.Activity_id = ac.Activity_id
+		GROUP BY e.EMP_f_name + ' ' + COALESCE(e.EMP_m_name,'') + ' ' + COALESCE(e.EMP_l_name,''), a.Emp_id)S
+		ON ad.atten_start_date = S.[Last Worked Activity]
+		INNER JOIN t_activity ta
+		ON
+		ad.Activity_id = ta.Activity_id;
